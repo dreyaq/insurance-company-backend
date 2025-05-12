@@ -14,7 +14,6 @@ class PolicyRepositoryImpl(PolicyRepository):
         self.session = session
     
     def _to_domain(self, model: PolicyModel) -> Policy:
-        """Преобразует ORM модель в доменную модель"""
         return Policy(
             id=model.id,
             policy_number=model.policy_number,
@@ -32,7 +31,6 @@ class PolicyRepositoryImpl(PolicyRepository):
         )
     
     def _to_model(self, entity: Policy) -> PolicyModel:
-        """Преобразует доменную модель в ORM модель"""
         return PolicyModel(
             id=entity.id,
             policy_number=entity.policy_number,

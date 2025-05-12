@@ -59,7 +59,6 @@ class ServiceFactory:
     def create_user_service(session: Session) -> UserService:
         """Создает сервис для работы с пользователями"""
         user_repository = RepositoryFactory.create_user_repository(session)
-        # Получаем секретный ключ из переменных окружения
         secret_key = os.environ.get("SECRET_KEY", "your-secret-key")
         auth_service = AuthService(secret_key=secret_key)
         return UserServiceImpl(user_repository, auth_service)

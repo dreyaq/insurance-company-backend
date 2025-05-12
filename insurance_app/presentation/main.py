@@ -17,7 +17,6 @@ from insurance_app.domain.exceptions import DomainException, AuthenticationExcep
 from insurance_app.infrastructure.auth.middleware import JWTAuthMiddleware
 
 
-# Создаем экземпляр FastAPI приложения
 app = FastAPI(
     title="Insurance Company API",
     description="API для страховой компании",
@@ -27,10 +26,9 @@ app = FastAPI(
     openapi_url="/api/openapi.json"
 )
 
-# Настройка CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "*"],  # В продакшене нужно указать конкретные домены
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "*"], 
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["Authorization", "Content-Type", "Accept", "Origin", 
@@ -38,7 +36,6 @@ app.add_middleware(
     expose_headers=["Authorization", "Content-Type"],
 )
 
-# Настройка JWT аутентификации
 secret_key = os.environ.get("SECRET_KEY", "your-secret-key")
 
 # Пути, которые не требуют аутентификации
@@ -51,7 +48,6 @@ excluded_paths = [
     "/api/auth/register",
 ]
 
-# Добавляем эндпоинт для проверки состояния API
 @app.get("/api/health-check", response_model=HealthCheckResponse, tags=["System"])
 async def health_check():
     """
@@ -63,10 +59,8 @@ async def health_check():
         "timestamp": datetime.datetime.now().isoformat()
     }
 
-# Определение требуемых ролей для разных путей
 def get_required_roles(path: str) -> list:
     """Возвращает список ролей, необходимых для доступа к пути"""
-    # Администраторские операции
     if path.startswith("/api/users") and not path.endswith("/me"):
         return ["admin"]
     return []
@@ -79,7 +73,6 @@ app.add_middleware(
     required_roles=get_required_roles
 )
 
-# Регистрация роутеров
 app.include_router(clients_router, prefix="/api")
 app.include_router(policies_router, prefix="/api")
 app.include_router(claims_router, prefix="/api")
@@ -88,7 +81,6 @@ app.include_router(auth_router, prefix="/api")
 app.include_router(users_router, prefix="/api")
 
 
-# Обработчик ошибок валидации
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     """Обработчик ошибок валидации запросов"""
@@ -98,7 +90,6 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     )
 
 
-# Обработчик доменных ошибок
 @app.exception_handler(DomainException)
 async def domain_exception_handler(request: Request, exc: DomainException):
     """Обработчик доменных ошибок"""
@@ -108,7 +99,6 @@ async def domain_exception_handler(request: Request, exc: DomainException):
     )
 
 
-# Обработчик ошибок аутентификации
 @app.exception_handler(AuthenticationException)
 async def authentication_exception_handler(request: Request, exc: AuthenticationException):
     """Обработчик ошибок аутентификации"""
@@ -119,7 +109,6 @@ async def authentication_exception_handler(request: Request, exc: Authentication
     )
 
 
-# Обработчик ошибок авторизации
 @app.exception_handler(AuthorizationException)
 async def authorization_exception_handler(request: Request, exc: AuthorizationException):
     """Обработчик ошибок авторизации"""
@@ -129,7 +118,6 @@ async def authorization_exception_handler(request: Request, exc: AuthorizationEx
     )
 
 
-# Проверка состояния API
 @app.get(
     "/api/health",
     response_model=HealthCheckResponse,
