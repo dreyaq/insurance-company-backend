@@ -1,0 +1,57 @@
+/* Основные стили */
+body {
+    background-color: #f8f9fa;
+}
+
+.content-section {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для таблиц */
+.table th {
+    background-color: #f8f9fa;
+}
+
+/* Стили для форм */
+.form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Вспомогательные классы */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Стили для модальных окон */
+.modal-header {
+    background-color: #0d6efd;
+    color: white;
+}
+
+/* Стили для кнопок действий в таблице */
+.action-btn {
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+/* Стили для сообщений об ошибках */
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    .d-flex.justify-content-between {
+        flex-direction: column;
+    }
+    .d-flex.justify-content-between .input-group {
+        width: 100% !important;
+        margin-top: 10px;
+    }
+}
